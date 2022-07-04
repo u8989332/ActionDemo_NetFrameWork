@@ -31,12 +31,13 @@ jobs:
         run: ./NUnit.ConsoleRunner.3.13.0/tools/nunit3-console.exe ActionDemo_NetFrameWorkTest/bin/Debug/net472/ActionDemo_NetFrameWorkTest.dll
       
       # Compile and Publish  
-      - name: Build App For Release
-        run: msbuild ActionDemo_NetFrameWork.sln;ActionDemo_NetFrameWorkTest/ActionDemo_NetFrameWorkTest.csproj /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="${{ github.workspace }}\published" /p:Configuration=Release 
-      - name: Upload Artifact
+      - name: Publish to folder
+        run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\" /p:Configuration=Release 
+
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: published_webapp
-          path: '${{ github.workspace }}/published'
+          name: ASP-app
+          path: '/published/**'
         
         
